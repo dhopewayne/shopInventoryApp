@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Inventory - Dynamic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100 font-sans flex min-h-screen">
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="bg-blue-800 text-white h-screen sticky top-0 transition-all duration-300 shadow-lg">
+    <div class="p-4 flex items-center justify-between">
+      <h1 id="sidebar-title" class="text-xl font-bold transition-opacity duration-300"> Take Stock </h1>
+      <button id="toggle-sidebar" class="text-white focus:outline-none">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+    <nav class="mt-4">
+      <ul class="space-y-2">
+        <li>
+          <button id="nav-products" class="flex items-center w-full p-3 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-box w-8"></i>
+            <span class="nav-text ml-3 transition-opacity duration-300">Products</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-add-product" class="flex items-center w-full p-3 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-plus-circle w-8"></i>
+            <span class="nav-text ml-3 transition-opacity duration-300">Add Product</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-purchase" class="flex items-center w-full p-3 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-shopping-cart w-8"></i>
+            <span class="nav-text ml-3 transition-opacity duration-300">Purchase</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-transactions" class="flex items-center w-full p-3 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-history w-8"></i>
+            <span class="nav-text ml-3 transition-opacity duration-300">Transactions</span>
+          </button>
+        </li>
+        <li>
+          <button id="nav-summary" class="flex items-center w-full p-3 hover:bg-blue-700 transition-colors duration-200">
+            <i class="fas fa-chart-line w-8"></i>
+            <span class="nav-text ml-3 transition-opacity duration-300">Sales Summary</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col">
+    <main class="container mx-auto p-6 flex-1">
+      <!-- Loader Overlay -->
+      <div id="loader" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="loader"></div>
+      </div>
+      <section id="products-section" class="hidden"></section>
+      <section id="add-product-section" class="hidden"></section>
+      <section id="purchase-section" class="hidden"></section>
+      <section id="transactions-section" class="hidden"></section>
+      <section id="summary-section" class="hidden"></section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-4">
+      <p>© 2025 Shop Inventory Project</p>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

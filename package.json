@@ -1,0 +1,27 @@
+{
+  "name": "shop-inventory-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "A comprehensive shop inventory project for managing products, processing purchases, and maintaining transaction records.",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "moment": "^2.30.1",
+    "mongoose": "^8.15.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

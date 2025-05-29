@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Inventory - Dynamic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@heroicons/vue@2.0.11/dist/heroicons.min.js"></script>
+</head>
+<body class="bg-gray-50 font-sans flex h-screen overflow-hidden">
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="bg-white w-64 md:w-20 lg:w-64 h-full shadow-lg transition-all duration-300 flex-shrink-0">
+    <div class="p-4 flex items-center justify-between border-b">
+      <h1 class="text-xl font-bold text-blue-600 whitespace-nowrap overflow-hidden transition-all duration-300">
+        <span class="lg:inline md:hidden">Shop Inventory</span>
+        <span class="lg:hidden md:inline hidden">SI</span>
+      </h1>
+      <button id="toggle-sidebar" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 space-y-2">
+      <button id="nav-products" class="nav-btn flex items-center w-full p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+        <span class="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">Products</span>
+      </button>
+      <button id="nav-add-product" class="nav-btn flex items-center w-full p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        <span class="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">Add Product</span>
+      </button>
+      <button id="nav-purchase" class="nav-btn flex items-center w-full p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span class="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">Purchase</span>
+      </button>
+      <button id="nav-transactions" class="nav-btn flex items-center w-full p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        <span class="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">Transactions</span>
+      </button>
+      <button id="nav-summary" class="nav-btn flex items-center w-full p-3 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-600 transition-all">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span class="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">Sales Summary</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Top Header -->
+    <header class="bg-white shadow-sm z-10">
+      <div class="flex items-center justify-between p-4">
+        <h2 id="page-title" class="text-xl font-semibold text-gray-800">Products</h2>
+        <div class="flex items-center space-x-4">
+          <div id="loading-indicator" class="hidden">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+      <div id="content-container">
+        <section id="products-section" class="hidden"></section>
+        <section id="add-product-section" class="hidden"></section>
+        <section id="purchase-section" class="hidden"></section>
+        <section id="transactions-section" class="hidden"></section>
+        <section id="summary-section" class="hidden"></section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
