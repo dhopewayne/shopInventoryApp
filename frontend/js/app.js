@@ -842,3 +842,16 @@ function showInlineAddQuantityForm(product) {
     renderProducts();
   };
 }
+
+// Close sidebar when clicking outside in tablet/mobile
+document.addEventListener('click', function(event) {
+  if (
+    window.innerWidth <= 1024 &&
+    sidebar.classList.contains('open') &&
+    !sidebar.contains(event.target) &&
+    event.target.id !== 'mobile-menu-btn'
+  ) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
+});
