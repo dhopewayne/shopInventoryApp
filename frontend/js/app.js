@@ -23,17 +23,46 @@ function initSidebar() {
   if (isCollapsed) {
     sidebar.classList.add('collapsed');
   }
-  
+
   // Mobile menu toggle
-  const mobileMenuBtn = document.createElement('button');
-  mobileMenuBtn.className = 'md:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-md';
-  mobileMenuBtn.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  `;
-  mobileMenuBtn.onclick = () => sidebar.classList.toggle('open');
-  document.body.appendChild(mobileMenuBtn);
+  let mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (!mobileMenuBtn) {
+    mobileMenuBtn = document.createElement('button');
+    mobileMenuBtn.id = 'mobile-menu-btn';
+    mobileMenuBtn.className = 'md:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-md shadow-md';
+    mobileMenuBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    `;
+    document.body.appendChild(mobileMenuBtn);
+  }
+
+  mobileMenuBtn.onclick = () => {
+    sidebar.classList.add('open');
+    mobileMenuBtn.style.display = 'none';
+  };
+
+  // Hide menu button when sidebar is open, show when closed
+  function updateMobileMenuBtn() {
+    if (window.innerWidth <= 1024) {
+      if (sidebar.classList.contains('open')) {
+        mobileMenuBtn.style.display = 'none';
+      } else {
+        mobileMenuBtn.style.display = 'block';
+      }
+    } else {
+      mobileMenuBtn.style.display = 'none';
+    }
+  }
+
+  // Listen for sidebar close (when a nav is clicked or sidebar is toggled)
+  sidebar.addEventListener('transitionend', updateMobileMenuBtn);
+  window.addEventListener('resize', updateMobileMenuBtn);
+
+  // Also update when sidebar is closed programmatically
+  window.updateMobileMenuBtn = updateMobileMenuBtn;
+  updateMobileMenuBtn();
 }
 
 // --- Toggle Sidebar ---
@@ -678,12 +707,14 @@ function closeSidebar() {
   sidebar.classList.remove('open');
   sidebar.classList.add('collapsed');
   localStorage.setItem('sidebarCollapsed', 'true');
+  if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
 }
 
 function openSidebar() {
   sidebar.classList.add('open');
   sidebar.classList.remove('collapsed');
   localStorage.setItem('sidebarCollapsed', 'false');
+  if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
 }
 
 function toggleSidebar() {
@@ -720,7 +751,10 @@ document.getElementById('nav-products').onclick = () => {
   showSection('products');
   renderProducts();
   setActiveNav('nav-products');
-  if (window.innerWidth <= 1024) closeSidebar(); // auto-collapse on tablet/mobile
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
 };
 document.getElementById('nav-add-product').onclick = () => {
   showSection('addProduct');
