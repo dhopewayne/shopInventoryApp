@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Shop Inventory Project
 
 ## Overview
@@ -76,3 +77,7 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## License
 This project is licensed under the MIT License.
+=======
+# shopInventoryApp
+A comprehensive shop inventory project for managing products, processing purchases, and maintaining transaction records.
+>>>>>>> a93137d07287ece50a3c364d5a41a7d24e0d7e2f
