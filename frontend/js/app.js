@@ -174,6 +174,10 @@ function renderProductList() {
     document.getElementById('nav-add-product').onclick = () => {
       showSection('addProduct');
       renderAddProduct();
+      if (window.innerWidth <= 1024) {
+        closeSidebar();
+        window.updateMobileMenuBtn && window.updateMobileMenuBtn();
+      }
     };
     return;
   }
@@ -759,8 +763,10 @@ document.getElementById('nav-products').onclick = () => {
 document.getElementById('nav-add-product').onclick = () => {
   showSection('addProduct');
   renderAddProduct();
-  setActiveNav('nav-add-product');
-  if (window.innerWidth <= 1024) closeSidebar();
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
 };
 document.getElementById('nav-purchase').onclick = () => {
   showSection('purchase');
