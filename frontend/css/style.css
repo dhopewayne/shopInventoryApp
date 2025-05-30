@@ -261,8 +261,8 @@ tr:hover td {
 @media (max-width: 1024px) {
   #sidebar {
     position: fixed;
-    right: auto;
-    left: 0;
+    right: 0;
+    left: auto;
     top: 0;
     z-index: 20;
     height: 100vh;
@@ -281,8 +281,8 @@ tr:hover td {
   .mobile-menu-btn {
     display: block;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    right: 0;
+    left: auto;
     left: auto;
     z-index: 30;
   }
