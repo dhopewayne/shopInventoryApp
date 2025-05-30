@@ -261,8 +261,8 @@ tr:hover td {
 @media (max-width: 1024px) {
   #sidebar {
     position: fixed;
-    right: 0;
-    left: auto;
+    right: auto;
+    left: 0;
     top: 0;
     z-index: 20;
     height: 100vh;
