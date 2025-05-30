@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:5000/api';
+const apiUrl = 'https://shopinventoryapp-production.up.railway.app/api';
 let products = [];
 let transactions = [];
 let editingProductId = null;
