@@ -44,7 +44,10 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 }));
-app.use(cors());
+app.use(cors({
+  origin: ['https://shopinventoryapp-production.up.railway'],
+  credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
