@@ -285,6 +285,11 @@ tr:hover td {
     left: auto;
     left: auto;
     z-index: 30;
+  } 
+  /* move sidebar to right */
+  #sidebar.collapsed h1 span,
+  #sidebar.collapsed .nav-btn span {
+    display: inline;
   }
 }
 
