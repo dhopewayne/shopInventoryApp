@@ -262,8 +262,7 @@ tr:hover td {
   #sidebar {
     position: fixed;
     right: 0;
-    left: auto;
-    top: 0;
+    top: 1rem;
     z-index: 20;
     height: 100vh;
     transform: translateX(100%);
@@ -287,10 +286,8 @@ tr:hover td {
     z-index: 30;
   } 
   /* move sidebar to right */
-  #sidebar.collapsed h1 span,
-  #sidebar.collapsed .nav-btn span {
-    display: inline;
-  }
+ 
+ 
 }
 
 /* Print styles */
