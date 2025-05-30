@@ -793,10 +793,8 @@ window.addEventListener('resize', () => {
 // --- Initial Load ---
 window.addEventListener('DOMContentLoaded', async () => {
   initSidebar();
-  // Restore last active section or default to 'products'
-  const lastSection = localStorage.getItem('activeSection') || 'products';
-  showSection(lastSection);
-  setActiveNav(`nav-${lastSection}`);
+  showSection('products');
+  setActiveNav('nav-products');
 
   showLoading();
   try {
