@@ -262,6 +262,7 @@ tr:hover td {
   #sidebar {
     position: fixed;
     right: 0;
+    left: auto;
     top: 1rem;
     z-index: 20;
     height: 100vh;
@@ -280,12 +281,11 @@ tr:hover td {
   .mobile-menu-btn {
     display: block;
     position: fixed;
-    right: 0;
-    left: auto;
+    right: 1;
     left: auto;
     z-index: 30;
   } 
-  /* move sidebar to right */
+ 
  
  
 }
