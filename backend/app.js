@@ -44,8 +44,10 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 }));
+
+// CORS: allow only your frontend domain in production
 app.use(cors({
-  origin: ['https://shopinventoryapp-production.up.railway'],
+  origin: ['https://shopinventoryapp-production.up.railway.app/'],
   credentials: true,
 }));
 
