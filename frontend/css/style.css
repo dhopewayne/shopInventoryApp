@@ -153,6 +153,18 @@ tr:hover td {
   transform: translateY(-1px);
 }
 
+/* Success button variant */
+.btn-success {
+  background-color: #10b981;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
 /* Badge Styles */
 .badge {
   display: inline-block;
@@ -176,6 +188,46 @@ tr:hover td {
 .badge-danger {
   background-color: #fee2e2;
   color: #991b1b;
+}
+
+/* Color-specific backgrounds */
+.bg-blue-50 {
+  background-color: #eff6ff;
+}
+
+.bg-green-50 {
+  background-color: #ecfdf5;
+}
+
+.text-blue-800 {
+  color: #1e40af;
+}
+
+.text-green-800 {
+  color: #065f46;
+}
+
+/* Focus rings for different colors */
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+}
+
+.focus\:ring-green-500:focus {
+  --tw-ring-color: rgba(16, 185, 129, 0.5);
+}
+
+.focus\:border-blue-500:focus {
+  border-color: #3b82f6;
+}
+
+.focus\:border-green-500:focus {
+  border-color: #10b981;
+}
+
+/* Active state for navigation items */
+.active {
+  background-color: #2563eb; /* Tailwind blue-600 */
+  color: #fff;
 }
 
 /* Responsive adjustments */
@@ -220,52 +272,4 @@ tr:hover td {
     margin: 0;
     box-shadow: none;
   }
-} 
-
-/* Add these to your existing styles.css */
-
-/* Success button variant */
-.btn-success {
-  background-color: #10b981;
-  color: white;
-  transition: all 0.2s ease;
-}
-
-.btn-success:hover {
-  background-color: #059669;
-  transform: translateY(-1px);
-}
-
-/* Color-specific backgrounds */
-.bg-blue-50 {
-  background-color: #eff6ff;
-}
-
-.bg-green-50 {
-  background-color: #ecfdf5;
-}
-
-.text-blue-800 {
-  color: #1e40af;
-}
-
-.text-green-800 {
-  color: #065f46;
-}
-
-/* Focus rings for different colors */
-.focus\:ring-blue-500:focus {
-  --tw-ring-color: rgba(59, 130, 246, 0.5);
-}
-
-.focus\:ring-green-500:focus {
-  --tw-ring-color: rgba(16, 185, 129, 0.5);
-}
-
-.focus\:border-blue-500:focus {
-  border-color: #3b82f6;
-}
-
-.focus\:border-green-500:focus {
-  border-color: #10b981;
 }

@@ -673,31 +673,88 @@ function filterTransactions() {
   renderTransactions(filtered, filterType, filterDate);
 }
 
-// --- Navigation Events ---
+// --- Sidebar Toggle and Responsive Behavior ---
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  sidebar.classList.add('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'true');
+}
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  sidebar.classList.remove('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'false');
+}
+
+function toggleSidebar() {
+  if (sidebar.classList.contains('open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+}
+
+// Attach toggle to button
+toggleSidebarBtn.onclick = toggleSidebar;
+
+// --- Navigation Highlight and Auto-Collapse ---
+const navButtons = [
+  'nav-products',
+  'nav-add-product',
+  'nav-purchase',
+  'nav-transactions',
+  'nav-summary'
+];
+
+function setActiveNav(id) {
+  navButtons.forEach(btnId => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.classList.toggle('active', btnId === id);
+    }
+  });
+}
+
+// Attach navigation events
 document.getElementById('nav-products').onclick = () => {
   showSection('products');
   renderProducts();
+  setActiveNav('nav-products');
+  if (window.innerWidth <= 1024) closeSidebar(); // auto-collapse on tablet/mobile
 };
-
 document.getElementById('nav-add-product').onclick = () => {
   showSection('addProduct');
   renderAddProduct();
+  setActiveNav('nav-add-product');
+  if (window.innerWidth <= 1024) closeSidebar();
 };
-
 document.getElementById('nav-purchase').onclick = () => {
   showSection('purchase');
   renderPurchase();
+  setActiveNav('nav-purchase');
+  if (window.innerWidth <= 1024) closeSidebar();
 };
-
 document.getElementById('nav-transactions').onclick = () => {
   showSection('transactions');
   renderTransactions();
+  setActiveNav('nav-transactions');
+  if (window.innerWidth <= 1024) closeSidebar();
 };
-
 document.getElementById('nav-summary').onclick = () => {
   showSection('summary');
   renderSummary();
+  setActiveNav('nav-summary');
+  if (window.innerWidth <= 1024) closeSidebar();
 };
+
+// --- Responsive: Close sidebar on resize if needed ---
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024) {
+    openSidebar();
+  } else {
+    closeSidebar();
+  }
+});
 
 // --- Initial Load ---
 window.addEventListener('DOMContentLoaded', async () => {
@@ -705,6 +762,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Restore last active section or default to 'products'
   const lastSection = localStorage.getItem('activeSection') || 'products';
   showSection(lastSection);
+  setActiveNav(`nav-${lastSection}`);
 
   showLoading();
   try {
