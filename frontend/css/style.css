@@ -263,7 +263,7 @@ tr:hover td {
     position: fixed;
     right: 0;
     left: auto;
-    top: 1rem;
+    top: 0;
     z-index: 20;
     height: 100vh;
     transform: translateX(100%);
@@ -285,9 +285,7 @@ tr:hover td {
     left: auto;
     z-index: 30;
   } 
- 
- 
- 
+
 }
 
 /* Print styles */
