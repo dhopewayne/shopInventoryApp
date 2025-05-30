@@ -261,11 +261,11 @@ tr:hover td {
 @media (max-width: 1024px) {
   #sidebar {
     position: fixed;
-    top: 0;
     right: 0;
     left: auto;
-    height: 100vh;
+    top: 1rem;
     z-index: 20;
+    height: 100vh;
     transform: translateX(100%);
     transition: transform 0.3s ease;
   }
@@ -281,11 +281,13 @@ tr:hover td {
   .mobile-menu-btn {
     display: block;
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    right: 1;
     left: auto;
     z-index: 30;
-  }
+  } 
+ 
+ 
+ 
 }
 
 /* Print styles */
