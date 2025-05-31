@@ -263,7 +263,7 @@ function renderProductList() {
     div.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
-          <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+          <h3 class="text-lg font-semibold text-gray-800 uppercase">${product.name}</h3>
           <p class="text-xl font-bold text-blue-600 mt-1">Gh₵${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
           <div class="mt-2">${stockStatus}</div>
         </div>
