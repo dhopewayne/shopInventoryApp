@@ -1028,10 +1028,3 @@ document.addEventListener('click', function(event) {
 
 
 
-
-// Attach toggle to button
-
-// Close sidebar when clicking outside on mobile
-
-
-// ... (rest of the previous code remains unchanged)
