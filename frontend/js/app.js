@@ -144,7 +144,7 @@ function renderProducts() {
   sections.products.innerHTML = `
     <div class="bg-white rounded-xl shadow-sm p-6">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold text-gray-300">Products Inventory</h2>
+        <h2 class="class="text-lg font-medium text-gray-800">Products Inventory</h2>
         <div class="flex items-center gap-4">
           <div class="text-sm text-gray-500">${products.length} products</div>
           <button id="nav-add-product-btn" class="btn-primary px-3 py-1.5 text-sm">
