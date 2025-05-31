@@ -7,6 +7,8 @@ body {
 /* Sidebar transition */
 #sidebar {
   font-size: 0.95rem;
+  z-index: 40;
+  /* Ensure sidebar is above content */
 }
 
 #sidebar.collapsed {
@@ -116,7 +118,6 @@ tr:hover td {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  /* High z-index to ensure visibility */
   background-color: rgba(255, 255, 255, 0.9);
   padding: 1rem;
   border-radius: 0.5rem;
@@ -332,13 +333,11 @@ tr:hover td {
 
   #page-title {
     font-size: 1.25rem;
-    /* Reduced size for phone */
     margin-bottom: 0.75rem;
   }
 
   #nav-add-product-btn {
     padding: 0.5rem 1rem;
-    /* Reduced size for phone */
     font-size: 0.85rem;
   }
 }
@@ -381,13 +380,11 @@ tr:hover td {
 
   #page-title {
     font-size: 1.5rem;
-    /* Reduced size for tablet */
     margin-bottom: 0.75rem;
   }
 
   #nav-add-product-btn {
     padding: 0.5rem 1rem;
-    /* Reduced size for tablet */
     font-size: 0.9rem;
   }
 }

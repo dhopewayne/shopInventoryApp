@@ -49,9 +49,14 @@ function initSidebar() {
   }
 
   mobileMenuBtn.onclick = (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent triggering document click
     toggleSidebar();
   };
+
+  // Prevent clicks inside sidebar from closing it
+  sidebar.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
 
   function updateMobileMenuBtn() {
     if (window.innerWidth <= 1024) {
@@ -107,7 +112,7 @@ function hideLoading() {
   setTimeout(() => {
     loadingIndicator.classList.add('hidden');
     loadingIndicator.style.opacity = '1'; // Reset for next use
-  }, 300); // Match transition duration
+  }, 300);
 }
 
 // --- Navigation ---
@@ -314,7 +319,7 @@ function showInlineEditForm(product, mode) {
         });
       }
       await fetchProducts();
-      await fetchTransactions(); // Ensure transactions are updated
+      await fetchTransactions();
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Error updating product.');
@@ -617,7 +622,6 @@ async function fetchTransactions() {
   try {
     const res = await fetch(`${apiUrl}/transactions`);
     transactions = await res.json();
-    // Ensure the current section is updated
     const activeSection = localStorage.getItem('activeSection') || 'products';
     if (activeSection === 'transactions') {
       renderTransactions();
@@ -661,7 +665,7 @@ async function addProduct(e) {
 
     document.getElementById('product-form').reset();
     await fetchProducts();
-    await fetchTransactions(); // Update transactions
+    await fetchTransactions();
   } catch (error) {
     console.error('Error adding product:', error);
     alert('An error occurred while adding the product.');
@@ -677,7 +681,7 @@ async function deleteProduct(id) {
   try {
     await fetch(`${apiUrl}/products/${id}/request`, { method: 'DELETE' });
     await fetchProducts();
-    await fetchTransactions(); // Update transactions
+    await fetchTransactions();
   } catch (error) {
     console.error('Error deleting product:', error);
     alert('An error occurred while deleting the product.');
@@ -717,9 +721,8 @@ async function processPurchase(e) {
 
     document.getElementById('purchase-form').reset();
     await fetchProducts();
-    await fetchTransactions(); // Ensure transactions are updated
+    await fetchTransactions();
 
-    // If on transactions or summary section, re-render immediately
     const activeSection = localStorage.getItem('activeSection');
     if (activeSection === 'transactions') {
       renderTransactions();
@@ -828,14 +831,14 @@ document.getElementById('nav-summary').onclick = () => {
   }
 };
 
-// Close sidebar on click outside
+// Enhanced click-outside handler for tablet and phone
 document.addEventListener('click', function (event) {
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   if (
     window.innerWidth <= 1024 &&
     sidebar.classList.contains('open') &&
     !sidebar.contains(event.target) &&
-    event.target.id !== 'mobile-menu-btn' &&
-    !mobileMenuBtn.contains(event.target)
+    (!mobileMenuBtn || !mobileMenuBtn.contains(event.target))
   ) {
     closeSidebar();
     window.updateMobileMenuBtn();
