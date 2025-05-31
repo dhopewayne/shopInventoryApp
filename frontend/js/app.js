@@ -179,9 +179,6 @@ function renderAddProduct() {
   document.getElementById('product-form').onsubmit = addProduct;
 }
 
-
-
-
 function renderProductList() {
   const productList = document.getElementById('product-list');
   if (!productList) return;
@@ -257,78 +254,6 @@ function renderProductList() {
     productList.appendChild(div);
   });
 }
-
-
-
-
-
-
-// function showInlineEditForm(product, mode) {
-//   const actionsDiv = document.getElementById(`actions-${product._id}`);
-//   if (!actionsDiv) return;
-  
-//   const isPrice = mode === 'price';
-//   const currentValue = isPrice ? product.price : product.quantity;
-//   const step = isPrice ? '0.01' : '1';
-//   const label = isPrice ? 'Price (Gh₵)' : 'Quantity';
-  
-//   actionsDiv.innerHTML = `
-//     <form id="inline-edit-form-${product._id}" class="bg-${isPrice ? 'blue' : 'green'}-50 p-4 rounded-lg">
-//       <h4 class="text-sm font-medium text-${isPrice ? 'blue' : 'green'}-800 mb-2">
-//         Editing ${isPrice ? 'Price' : 'Quantity'} for ${product.name}
-//       </h4>
-//       <div class="flex items-end space-x-2">
-//         <div class="flex-1">
-//           <label class="block text-xs font-medium text-gray-500 mb-1">${label}</label>
-//           <input type="number" id="inline-edit-value-${product._id}" 
-//             placeholder="Enter new ${isPrice ? 'price' : 'quantity'}" 
-//             required min="0" step="${step}"
-//             class="input-field w-full p-2 border rounded focus:ring-2 focus:ring-${isPrice ? 'blue' : 'green'}-500 focus:border-${isPrice ? 'blue' : 'green'}-500"
-//             value="${currentValue}">
-//         </div>
-//         <button type="submit" class="btn-${isPrice ? 'primary' : 'success'} px-3 py-2 text-sm">
-//           Update ${isPrice ? 'Price' : 'Quantity'}
-//         </button>
-//         <button type="button" class="bg-gray-200 text-gray-700 px-3 py-2 rounded text-sm hover:bg-gray-300" id="cancel-inline-edit-${product._id}">
-//           Cancel
-//         </button>
-//       </div>
-//     </form>
-//   `;
-  
-//   document.getElementById(`inline-edit-form-${product._id}`).onsubmit = async (e) => {
-//     e.preventDefault();
-//     const value = document.getElementById(`inline-edit-value-${product._id}`).value;
-    
-//     showLoading();
-//     try {
-//       if (isPrice) {
-//         await fetch(`${apiUrl}/products/${product._id}/price`, {
-//           method: 'PUT',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify({ price: parseFloat(value) }),
-//         });
-//       } else {
-//         const diff = parseInt(value) - product.quantity;
-//         await fetch(`${apiUrl}/products/${product._id}/quantity`, {
-//           method: 'PUT',
-//           headers: { 'Content-Type': 'application/json' },
-//           body: JSON.stringify({ quantity: diff }),
-//         });
-//       }
-//       await fetchProducts();
-//     } catch (error) {
-//       console.error('Error updating product:', error);
-//     } finally {
-//       hideLoading();
-//     }
-//   };
-  
-//   document.getElementById(`cancel-inline-edit-${product._id}`).onclick = () => {
-//     renderProducts();
-//   };
-// }  
-
 
 function showInlineEditForm(product, mode) {
   const actionsDiv = document.getElementById(`actions-${product._id}`);
@@ -422,8 +347,6 @@ function renderPurchase() {
   `;
   document.getElementById('purchase-form').onsubmit = processPurchase;
 }
-
-
 
 
 
@@ -913,9 +836,14 @@ window.addEventListener('resize', () => {
   }
 });
 
+
+
 // --- Initial Load ---
 window.addEventListener('DOMContentLoaded', async () => {
   initSidebar();
+  
+  // Set copyright year
+  document.getElementById('copyright-year').textContent = new Date().getFullYear();
   
   // Retrieve the last active section and nav from localStorage, default to 'products'
   const lastSection = localStorage.getItem('activeSection') || 'products';
@@ -947,6 +875,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     hideLoading();
   }
 });
+
 
 function showInlineAddQuantityForm(product) {
   const actionsDiv = document.getElementById(`actions-${product._id}`);
