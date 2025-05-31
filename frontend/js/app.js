@@ -268,8 +268,18 @@ function renderProductList() {
 }
 
 function showInlineEditForm(product, mode) {
+  // Check if another product is already being edited
+  if (editingProductId !== null && editingProductId !== product._id) {
+    alert('Please finish editing the current product before editing another one.');
+    return;
+  }
+
   const actionsDiv = document.getElementById(`actions-${product._id}`);
   if (!actionsDiv) return;
+
+  // Set the current product and mode as being edited
+  editingProductId = product._id;
+  editingMode = mode;
 
   const isPrice = mode === 'price';
   const step = isPrice ? '0.01' : '1';
@@ -320,6 +330,9 @@ function showInlineEditForm(product, mode) {
       }
       await fetchProducts();
       await fetchTransactions();
+      // Reset editing state after successful update
+      editingProductId = null;
+      editingMode = null;
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Error updating product.');
@@ -329,6 +342,9 @@ function showInlineEditForm(product, mode) {
   };
 
   document.getElementById(`cancel-inline-edit-${product._id}`).onclick = () => {
+    // Reset editing state on cancel
+    editingProductId = null;
+    editingMode = null;
     renderProducts();
   };
 }
