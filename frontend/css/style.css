@@ -323,14 +323,12 @@ tr:hover td {
 /* Base Styles */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 16px;
-  /* Increased base font size for better readability */
+  font-size: 16px; /* Increased base font size for better readability */
 }
 
 /* Sidebar transition */
 #sidebar {
-  font-size: 1.1rem;
-  /* Slightly larger font for sidebar */
+  font-size: 1.1rem; /* Slightly larger font for sidebar */
 }
 
 #sidebar.collapsed {
@@ -348,14 +346,12 @@ body {
 /* Product Item Styles */
 .product-item {
   border: 1px solid #e5e7eb;
-  padding: 2rem;
-  /* Increased padding for larger touch targets */
+  padding: 2rem; /* Increased padding for larger touch targets */
   border-radius: 0.75rem;
   background-color: white;
   transition: all 0.3s ease;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  font-size: 1.1rem;
-  /* Larger font for product items */
+  font-size: 1.1rem; /* Larger font for product items */
 }
 
 .product-item:hover {
@@ -364,13 +360,11 @@ body {
 }
 
 .product-item button {
-  padding: 0.75rem 1.25rem;
-  /* Larger buttons for better touch interaction */
+  padding: 0.75rem 1.25rem; /* Larger buttons for better touch interaction */
   margin-right: 0.75rem;
   border-radius: 0.5rem;
   font-weight: 500;
-  font-size: 1rem;
-  /* Larger button text */
+  font-size: 1rem; /* Larger button text */
   transition: all 0.2s ease;
 }
 
@@ -397,8 +391,7 @@ table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: 1rem;
-  /* Larger font for table text */
+  font-size: 1rem; /* Larger font for table text */
 }
 
 th {
@@ -406,15 +399,12 @@ th {
   position: sticky;
   top: 0;
   z-index: 10;
-  font-size: 0.9rem;
-  /* Slightly larger header text */
-  padding: 1rem 1.25rem;
-  /* Increased padding */
+  font-size: 0.9rem; /* Slightly larger header text */
+  padding: 1rem 1.25rem; /* Increased padding */
 }
 
 td {
-  padding: 1rem 1.25rem;
-  /* Increased padding for table cells */
+  padding: 1rem 1.25rem; /* Increased padding for table cells */
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
 }
@@ -431,10 +421,8 @@ tr:hover td {
 .input-field {
   transition: all 0.3s ease;
   border: 1px solid #e5e7eb;
-  font-size: 1.1rem;
-  /* Larger input text */
-  padding: 0.75rem;
-  /* Increased padding for inputs */
+  font-size: 1.1rem; /* Larger input text */
+  padding: 0.75rem; /* Increased padding for inputs */
 }
 
 .input-field:focus {
@@ -480,10 +468,8 @@ tr:hover td {
   background-color: #3b82f6;
   color: white;
   transition: all 0.2s ease;
-  padding: 0.75rem 1.5rem;
-  /* Larger buttons */
-  font-size: 1.1rem;
-  /* Larger button text */
+  padding: 0.75rem 1.5rem; /* Larger buttons */
+  font-size: 1.1rem; /* Larger button text */
 }
 
 .btn-primary:hover {
@@ -521,11 +507,9 @@ tr:hover td {
 /* Badge Styles */
 .badge {
   display: inline-block;
-  padding: 0.35rem 0.75rem;
-  /* Slightly larger badges */
+  padding: 0.35rem 0.75rem; /* Slightly larger badges */
   border-radius: 9999px;
-  font-size: 0.85rem;
-  /* Larger badge text */
+  font-size: 0.85rem; /* Larger badge text */
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -593,10 +577,8 @@ tr:hover td {
     height: 100vh;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    width: 20rem;
-    /* Wider sidebar for better touch interaction */
-    font-size: 1.2rem;
-    /* Larger font for mobile */
+    width: 20rem; /* Wider sidebar for better touch interaction */
+    font-size: 1.2rem; /* Larger font for mobile */
   }
 
   #sidebar.open {
@@ -614,28 +596,22 @@ tr:hover td {
 
   .mobile-menu-btn {
     display: block;
-    padding: 1rem;
-    /* Larger touch target */
+    padding: 1rem; /* Larger touch target */
     font-size: 1.2rem;
   }
 
   .product-item {
-    padding: 1.5rem;
-    /* Adjusted padding for smaller screens */
+    padding: 1.5rem; /* Adjusted padding for smaller screens */
     font-size: 1.1rem;
   }
 
-  .btn-primary,
-  .btn-danger,
-  .btn-success {
-    padding: 1rem 2rem;
-    /* Even larger buttons for mobile */
+  .btn-primary, .btn-danger, .btn-success {
+    padding: 1rem 2rem; /* Even larger buttons for mobile */
     font-size: 1.2rem;
   }
 
   .input-field {
-    padding: 1rem;
-    /* Larger input padding */
+    padding: 1rem; /* Larger input padding */
     font-size: 1.2rem;
   }
 }
@@ -650,8 +626,7 @@ tr:hover td {
     height: 100vh;
     transform: translateX(100%);
     transition: transform 0.3s ease;
-    width: 20rem;
-    /* Wider sidebar for tablets */
+    width: 20rem; /* Wider sidebar for tablets */
     font-size: 1.2rem;
   }
 
@@ -669,9 +644,397 @@ tr:hover td {
     right: 1rem;
     left: auto;
     z-index: 30;
-    padding: 1rem;
-    /* Larger touch target */
+    padding: 1rem; /* Larger touch target */
     font-size: 1.2rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  header,
+  footer,
+  nav,
+  button {
+    display: none;
+  }
+
+  .receipt-container {
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+} 
+
+/* Base Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  /* Reduced base font size for better proportion */
+}
+
+/* Sidebar transition */
+#sidebar {
+  font-size: 0.95rem;
+  /* Slightly smaller font for sidebar */
+}
+
+#sidebar.collapsed {
+  width: 4rem;
+  /* Slightly smaller collapsed width */
+}
+
+#sidebar.collapsed h1 span {
+  display: none;
+}
+
+#sidebar.collapsed .nav-btn span {
+  display: none;
+}
+
+/* Product Item Styles */
+.product-item {
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  /* Reduced padding with added internal spacing */
+  border-radius: 0.5rem;
+  /* Slightly smaller radius */
+  background-color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 0.95rem;
+  /* Smaller font for product items */
+  margin-bottom: 1rem;
+  /* Added margin to prevent overlap */
+}
+
+.product-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.1), 0 2px 3px -1px rgba(0, 0, 0, 0.06);
+}
+
+.product-item button {
+  padding: 0.5rem 0.75rem;
+  /* Smaller buttons for better fit */
+  margin-right: 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  /* Smaller button text */
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #2563eb;
+}
+
+.delete-button {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+  /* Smaller font for table text */
+}
+
+th {
+  background-color: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-size: 0.8rem;
+  /* Smaller header text */
+  padding: 0.75rem 1rem;
+  /* Reduced padding */
+}
+
+td {
+  padding: 0.75rem 1rem;
+  /* Reduced padding for table cells */
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Form Styles */
+.input-field {
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  /* Smaller input text */
+  padding: 0.5rem;
+  /* Reduced padding for inputs */
+}
+
+.input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Loading Animation */
+.loader {
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade In Animation */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  /* Smaller buttons */
+  font-size: 0.95rem;
+  /* Smaller button text */
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Success button variant */
+.btn-success {
+  background-color: #10b981;
+  color: white;
+  transition: all 0.2s ease;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+}
+
+.btn-success:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+/* Badge Styles */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  /* Smaller badges */
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  /* Smaller badge text */
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Color-specific backgrounds */
+.bg-blue-50 {
+  background-color: #eff6ff;
+}
+
+.bg-green-50 {
+  background-color: #ecfdf5;
+}
+
+.text-blue-800 {
+  color: #1e40af;
+}
+
+.text-green-800 {
+  color: #065f46;
+}
+
+/* Focus rings for different colors */
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+}
+
+.focus\:ring-green-500:focus {
+  --tw-ring-color: rgba(16, 185, 129, 0.5);
+}
+
+.focus\:border-blue-500:focus {
+  border-color: #3b82f6;
+}
+
+.focus\:border-green-500:focus {
+  border-color: #10b981;
+}
+
+/* Active state for navigation items */
+.active {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    z-index: 20;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 16rem;
+    /* Slightly smaller sidebar for mobile */
+    font-size: 1rem;
+    /* Adjusted font size for mobile */
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  #sidebar.collapsed {
+    width: 16rem;
+  }
+
+  #sidebar.collapsed h1 span,
+  #sidebar.collapsed .nav-btn span {
+    display: inline;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+    padding: 0.75rem;
+    /* Adjusted touch target */
+    font-size: 1rem;
+  }
+
+  .product-item {
+    padding: 0.75rem;
+    /* Smaller padding for mobile */
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    /* Ensure no overlap */
+  }
+
+  .btn-primary,
+  .btn-danger,
+  .btn-success {
+    padding: 0.75rem 1.25rem;
+    /* Adjusted buttons for mobile */
+    font-size: 1rem;
+  }
+
+  .input-field {
+    padding: 0.75rem;
+    /* Adjusted input padding */
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  #sidebar {
+    position: fixed;
+    right: 0;
+    left: auto;
+    top: 0;
+    z-index: 20;
+    height: 100vh;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    width: 16rem;
+    /* Smaller sidebar for tablets */
+    font-size: 1rem;
+  }
+
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  #sidebar.collapsed {
+    width: 16rem;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+    position: fixed;
+    right: 1rem;
+    left: auto;
+    z-index: 30;
+    padding: 0.75rem;
+    /* Adjusted touch target */
+    font-size: 1rem;
   }
 }
 
@@ -696,8 +1059,8 @@ tr:hover td {
   color: white;
   font-weight: 500;
   transition: background-color 0.2s;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
 }
 
 .btn-secondary:hover {
