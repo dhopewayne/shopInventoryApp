@@ -44,8 +44,10 @@ app.use(rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 }));
+
+// 'https://shopinventoryapp-production.up.railway', 'http://localhost:3000'
 app.use(cors({
-  origin: ['https://shopinventoryapp-production.up.railway'],
+  origin: [ 'https://shopinventoryapp-production.up.railway'], // Adjust to your frontend URL
   credentials: true,
 }));
 

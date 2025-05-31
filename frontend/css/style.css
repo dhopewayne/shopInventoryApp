@@ -302,4 +302,19 @@ tr:hover td {
     margin: 0;
     box-shadow: none;
   }
+} 
+
+
+
+.btn-secondary {
+  background-color: #6b7280;
+  /* Gray background */
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+  /* Darker gray on hover */
 }

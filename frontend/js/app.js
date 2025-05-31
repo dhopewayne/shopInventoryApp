@@ -1,9 +1,14 @@
+
 const apiUrl = 'https://shopinventoryapp-production.up.railway.app/api';
+
+
+
+// const apiUrl = 'https://localhost:5000/api';
 let products = [];
 let transactions = [];
 let editingProductId = null;
 let editingMode = null; // 'price' or 'quantity'   
-
+let isFilterVisible = false;
 // --- DOM Elements ---
 const sidebar = document.getElementById('sidebar');
 const toggleSidebarBtn = document.getElementById('toggle-sidebar');
@@ -109,18 +114,40 @@ function showSection(section) {
 }
 
 // --- Render Functions ---
+
+
+// --- Render Functions ---
 function renderProducts() {
   sections.products.innerHTML = `
     <div class="bg-white rounded-xl shadow-sm p-6">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Products Inventory</h2>
-        <div class="text-sm text-gray-500">${products.length} products</div>
+        <div class="flex items-center gap-4">
+          <div class="text-sm text-gray-500">${products.length} products</div>
+          <button id="nav-add-product-btn" class="btn-primary px-4 py-2 text-sm">
+            Add Product
+          </button>
+        </div>
       </div>
       <div id="product-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
     </div>
   `;
   renderProductList();
+  
+  // Attach event listener to the Add Product button
+  document.getElementById('nav-add-product-btn').onclick = () => {
+    showSection('addProduct');
+    renderAddProduct();
+    setActiveNav('nav-add-product');
+    localStorage.setItem('activeNav', 'nav-add-product');
+    if (window.innerWidth <= 1024) {
+      closeSidebar();
+      window.updateMobileMenuBtn && window.updateMobileMenuBtn();
+    }
+  };
 }
+
+
 
 function renderAddProduct() {
   sections.addProduct.innerHTML = `
@@ -153,6 +180,9 @@ function renderAddProduct() {
   document.getElementById('product-form').onsubmit = addProduct;
 }
 
+
+
+
 function renderProductList() {
   const productList = document.getElementById('product-list');
   if (!productList) return;
@@ -162,23 +192,12 @@ function renderProductList() {
     productList.innerHTML = `
       <div class="col-span-full text-center py-12">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7h16" />
         </svg>
         <h3 class="mt-2 text-lg font-medium text-gray-900">No products found</h3>
         <p class="mt-1 text-gray-500">Add your first product to get started</p>
-        <button id="nav-add-product" class="mt-4 btn-primary px-4 py-2 text-sm">
-          Add Product
-        </button>
       </div>
     `;
-    document.getElementById('nav-add-product').onclick = () => {
-      showSection('addProduct');
-      renderAddProduct();
-      if (window.innerWidth <= 1024) {
-        closeSidebar();
-        window.updateMobileMenuBtn && window.updateMobileMenuBtn();
-      }
-    };
     return;
   }
   
@@ -239,6 +258,11 @@ function renderProductList() {
     productList.appendChild(div);
   });
 }
+
+
+
+
+
 
 function showInlineEditForm(product, mode) {
   const actionsDiv = document.getElementById(`actions-${product._id}`);
@@ -334,6 +358,10 @@ function renderPurchase() {
   document.getElementById('purchase-form').onsubmit = processPurchase;
 }
 
+
+
+
+
 function renderTransactions(filteredList = null, filterType = '', filterDate = '') {
   // Use filtered list if provided, otherwise show all
   const list = filteredList || transactions;
@@ -352,12 +380,20 @@ function renderTransactions(filteredList = null, filterType = '', filterDate = '
             </span>
           </h2>
         </div>
-        <div class="text-sm text-gray-500">
-          Total Transactions: ${totalCount}
+        <div class="flex items-center gap-4">
+          <div class="text-sm text-gray-500">
+            Total Transactions: ${totalCount}
+          </div>
+          <button id="show-filter-btn" class="btn-primary px-4 py-2 text-sm ${isFilterVisible ? 'hidden' : ''}">
+            Show Filter
+          </button>
+          <button id="hide-filter-btn" class="btn-secondary px-4 py-2 text-sm ${isFilterVisible ? '' : 'hidden'}">
+            Hide Filter
+          </button>
         </div>
       </div>
       
-      <form id="filter-form" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <form id="filter-form" class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4 ${isFilterVisible ? '' : 'hidden'}">
         <div>
           <label for="filter-start" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
           <input type="date" id="filter-start" class="input-field w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -399,6 +435,16 @@ function renderTransactions(filteredList = null, filterType = '', filterDate = '
       </div>
     </div>
   `;
+  
+  // Attach event listeners for filter buttons
+  document.getElementById('show-filter-btn').onclick = () => {
+    isFilterVisible = true;
+    renderTransactions(filteredList, filterType, filterDate);
+  };
+  document.getElementById('hide-filter-btn').onclick = () => {
+    isFilterVisible = false;
+    renderTransactions(filteredList, filterType, filterDate);
+  };
   document.getElementById('filter-btn').onclick = filterTransactions;
   renderTransactionList(list, filterType, filterDate);
 }
@@ -750,40 +796,46 @@ function setActiveNav(id) {
   });
 }
 
-// Attach navigation events
+// Attach navigation events with local storage persistence
 document.getElementById('nav-products').onclick = () => {
   showSection('products');
   renderProducts();
   setActiveNav('nav-products');
+  localStorage.setItem('activeNav', 'nav-products');
   if (window.innerWidth <= 1024) {
     closeSidebar();
-    window.updateMobileMenuBtn();
+    window.updateMobileMenuBtn && window.updateMobileMenuBtn();
   }
 };
 document.getElementById('nav-add-product').onclick = () => {
   showSection('addProduct');
   renderAddProduct();
+  setActiveNav('nav-add-product');
+  localStorage.setItem('activeNav', 'nav-add-product');
   if (window.innerWidth <= 1024) {
     closeSidebar();
-    window.updateMobileMenuBtn();
+    window.updateMobileMenuBtn && window.updateMobileMenuBtn();
   }
 };
 document.getElementById('nav-purchase').onclick = () => {
   showSection('purchase');
   renderPurchase();
   setActiveNav('nav-purchase');
+  localStorage.setItem('activeNav', 'nav-purchase');
   if (window.innerWidth <= 1024) closeSidebar();
 };
 document.getElementById('nav-transactions').onclick = () => {
   showSection('transactions');
   renderTransactions();
   setActiveNav('nav-transactions');
+  localStorage.setItem('activeNav', 'nav-transactions');
   if (window.innerWidth <= 1024) closeSidebar();
 };
 document.getElementById('nav-summary').onclick = () => {
   showSection('summary');
   renderSummary();
   setActiveNav('nav-summary');
+  localStorage.setItem('activeNav', 'nav-summary');
   if (window.innerWidth <= 1024) closeSidebar();
 };
 
@@ -799,20 +851,37 @@ window.addEventListener('resize', () => {
 // --- Initial Load ---
 window.addEventListener('DOMContentLoaded', async () => {
   initSidebar();
-  // Restore last active section or default to 'products'
+  
+  // Retrieve the last active section and nav from localStorage, default to 'products'
   const lastSection = localStorage.getItem('activeSection') || 'products';
-  showSection(lastSection);
-  setActiveNav(`nav-${lastSection}`);
+  const lastNav = localStorage.getItem('activeNav') || 'nav-products';
+  
+  // Validate the stored section to ensure it exists
+  const validSections = ['products', 'addProduct', 'purchase', 'transactions', 'summary'];
+  const activeSection = validSections.includes(lastSection) ? lastSection : 'products';
+  const activeNav = navButtons.includes(lastNav) ? lastNav : 'nav-products';
+  
+  // Show the section and highlight the nav
+  showSection(activeSection);
+  setActiveNav(activeNav);
+  
+  // Render the appropriate section content
+  if (activeSection === 'products') renderProducts();
+  else if (activeSection === 'addProduct') renderAddProduct();
+  else if (activeSection === 'purchase') renderPurchase();
+  else if (activeSection === 'transactions') renderTransactions();
+  else if (activeSection === 'summary') renderSummary();
 
   showLoading();
   try {
-    await Promise.all([fetchProducts(), fetchTransactions()]);
+    await fetchProducts(); // Fetch and render products
+    await fetchTransactions(); // Fetch transactions for other sections
   } catch (error) {
     console.error('Initial load error:', error);
   } finally {
     hideLoading();
   }
-}); 
+});
 
 function showInlineAddQuantityForm(product) {
   const actionsDiv = document.getElementById(`actions-${product._id}`);
