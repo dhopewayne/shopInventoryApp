@@ -1,13 +1,11 @@
 const apiUrl = 'https://shopinventoryapp-production.up.railway.app/api';
 
-
-
-// const apiUrl = 'https://localhost:5000/api';
 let products = [];
 let transactions = [];
 let editingProductId = null;
-let editingMode = null; // 'price' or 'quantity'   
+let editingMode = null; // 'price' or 'quantity'
 let isFilterVisible = false;
+
 // --- DOM Elements ---
 const sidebar = document.getElementById('sidebar');
 const toggleSidebarBtn = document.getElementById('toggle-sidebar');
@@ -20,54 +18,6 @@ const sections = {
   transactions: document.getElementById('transactions-section'),
   summary: document.getElementById('summary-section'),
 };
-
-// --- Initialize Sidebar State ---
-// function initSidebar() {
-//   const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-//   if (isCollapsed) {
-//     sidebar.classList.add('collapsed');
-//   }
-
-//   // Mobile menu toggle
-//   let mobileMenuBtn = document.getElementById('mobile-menu-btn');
-//   if (!mobileMenuBtn) {
-//     mobileMenuBtn = document.createElement('button');
-//     mobileMenuBtn.id = 'mobile-menu-btn';
-//     mobileMenuBtn.className = 'md:hidden fixed top-4 right-4 z-30 bg-white p-2 rounded-md shadow-md';
-//     mobileMenuBtn.innerHTML = `
-//       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-//       </svg>
-//     `;
-//     document.body.appendChild(mobileMenuBtn);
-//   }
-
-//   mobileMenuBtn.onclick = () => {
-//     sidebar.classList.add('open');
-//     mobileMenuBtn.style.display = 'none';
-//   };
-
-//   // Hide menu button when sidebar is open, show when closed
-//   function updateMobileMenuBtn() {
-//     if (window.innerWidth <= 1024) {
-//       if (sidebar.classList.contains('open')) {
-//         mobileMenuBtn.style.display = 'none';
-//       } else {
-//         mobileMenuBtn.style.display = 'block';
-//       }
-//     } else {
-//       mobileMenuBtn.style.display = 'none';
-//     }
-//   }
-
-//   // Listen for sidebar close (when a nav is clicked or sidebar is toggled)
-//   sidebar.addEventListener('transitionend', updateMobileMenuBtn);
-//   window.addEventListener('resize', updateMobileMenuBtn);
-
-//   // Also update when sidebar is closed programmatically
-//   window.updateMobileMenuBtn = updateMobileMenuBtn;
-//   updateMobileMenuBtn();
-// } 
 
 // --- Initialize Sidebar State ---
 function initSidebar() {
@@ -89,7 +39,7 @@ function initSidebar() {
   if (!mobileMenuBtn) {
     mobileMenuBtn = document.createElement('button');
     mobileMenuBtn.id = 'mobile-menu-btn';
-    mobileMenuBtn.className = 'md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-md shadow-md'; // Increased z-index and padding
+    mobileMenuBtn.className = 'md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-md shadow-md';
     mobileMenuBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -99,11 +49,10 @@ function initSidebar() {
   }
 
   mobileMenuBtn.onclick = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation();
     toggleSidebar();
   };
 
-  // Update mobile menu button visibility
   function updateMobileMenuBtn() {
     if (window.innerWidth <= 1024) {
       mobileMenuBtn.style.display = sidebar.classList.contains('open') ? 'none' : 'block';
@@ -112,58 +61,78 @@ function initSidebar() {
     }
   }
 
-  // Listen for sidebar transitions and window resize
   sidebar.addEventListener('transitionend', updateMobileMenuBtn);
   window.addEventListener('resize', updateMobileMenuBtn);
   window.updateMobileMenuBtn = updateMobileMenuBtn;
   updateMobileMenuBtn();
 }
 
-
 // --- Toggle Sidebar ---
-toggleSidebarBtn.onclick = () => {
-  sidebar.classList.toggle('collapsed');
-  localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+function toggleSidebar() {
+  if (sidebar.classList.contains('open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+  window.updateMobileMenuBtn();
+}
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  sidebar.classList.remove('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'false');
+}
+
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  sidebar.classList.add('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'true');
+}
+
+toggleSidebarBtn.onclick = (e) => {
+  e.stopPropagation();
+  toggleSidebar();
 };
 
 // --- Show Loading Indicator ---
 function showLoading() {
   loadingIndicator.classList.remove('hidden');
+  loadingIndicator.style.opacity = '1';
+  loadingIndicator.style.transition = 'opacity 0.3s ease';
 }
 
 // --- Hide Loading Indicator ---
 function hideLoading() {
-  loadingIndicator.classList.add('hidden');
+  loadingIndicator.style.opacity = '0';
+  setTimeout(() => {
+    loadingIndicator.classList.add('hidden');
+    loadingIndicator.style.opacity = '1'; // Reset for next use
+  }, 300); // Match transition duration
 }
 
 // --- Navigation ---
 function showSection(section) {
-  Object.values(sections).forEach(sec => {
+  Object.values(sections).forEach((sec) => {
     sec.classList.add('hidden');
     sec.classList.remove('fade-in');
   });
 
-  // Update page title
   const titles = {
-    'products': 'Products',
-    'addProduct': 'Add Product',
-    'purchase': 'Purchase Products',
-    'transactions': 'Transaction History',
-    'summary': 'Sales Summary'
+    products: 'Products',
+    addProduct: 'Add Product',
+    purchase: 'Purchase Products',
+    transactions: 'Transaction History',
+    summary: 'Sales Summary',
   };
   pageTitle.textContent = titles[section];
 
-  // Show the selected section with animation
   sections[section].classList.remove('hidden');
   setTimeout(() => {
     sections[section].classList.add('fade-in');
   }, 10);
 
-  // Store the active section in localStorage
   localStorage.setItem('activeSection', section);
 }
-
-
 
 // --- Render Functions ---
 function renderProducts() {
@@ -173,7 +142,7 @@ function renderProducts() {
         <h2 class="text-2xl font-semibold text-gray-800">Products Inventory</h2>
         <div class="flex items-center gap-4">
           <div class="text-sm text-gray-500">${products.length} products</div>
-          <button id="nav-add-product-btn" class="btn-primary px-4 py-2 text-sm">
+          <button id="nav-add-product-btn" class="btn-primary px-3 py-1.5 text-sm">
             Add Product
           </button>
         </div>
@@ -182,8 +151,7 @@ function renderProducts() {
     </div>
   `;
   renderProductList();
-  
-  // Attach event listener to the Add Product button
+
   document.getElementById('nav-add-product-btn').onclick = () => {
     showSection('addProduct');
     renderAddProduct();
@@ -191,12 +159,10 @@ function renderProducts() {
     localStorage.setItem('activeNav', 'nav-add-product');
     if (window.innerWidth <= 1024) {
       closeSidebar();
-      window.updateMobileMenuBtn && window.updateMobileMenuBtn();
+      window.updateMobileMenuBtn();
     }
   };
 }
-
-
 
 function renderAddProduct() {
   sections.addProduct.innerHTML = `
@@ -233,7 +199,7 @@ function renderProductList() {
   const productList = document.getElementById('product-list');
   if (!productList) return;
   productList.innerHTML = '';
-  
+
   if (products.length === 0) {
     productList.innerHTML = `
       <div class="col-span-full text-center py-12">
@@ -246,11 +212,11 @@ function renderProductList() {
     `;
     return;
   }
-  
-  products.forEach(product => {
+
+  products.forEach((product) => {
     const div = document.createElement('div');
     div.className = 'product-item';
-    
+
     let stockStatus = '';
     if (product.quantity <= 0) {
       stockStatus = `<span class="badge badge-danger">Out of Stock</span>`;
@@ -259,12 +225,12 @@ function renderProductList() {
     } else {
       stockStatus = `<span class="badge badge-success">In Stock (${product.quantity})</span>`;
     }
-    
+
     div.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
           <h3 class="text-lg font-semibold text-gray-800 uppercase">${product.name}</h3>
-          <p class="text-xl font-bold text-blue-600 mt-1">Gh₵${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
+          <p class="text-xl font-bold text-blue-600 mt-1">Gh₵${product.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           <div class="mt-2">${stockStatus}</div>
         </div>
         <div class="flex space-x-2">
@@ -278,7 +244,7 @@ function renderProductList() {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           </button>
-          <button class="delete-button text-white-500 hover:text-green-700" title="Delete Product">
+          <button class="delete-button text-red-500 hover:text-red-700" title="Delete Product">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
@@ -287,20 +253,11 @@ function renderProductList() {
       </div>
       <div id="actions-${product._id}" class="mt-4"></div>
     `;
-    
-    // Edit Price
-    div.querySelector('.edit-price-button').onclick = () => {
-      showInlineEditForm(product, 'price');
-    };
-    
-    // Edit Quantity
-    div.querySelector('.edit-quantity-button').onclick = () => {
-      showInlineEditForm(product, 'quantity');
-    };
-    
-    // Delete
+
+    div.querySelector('.edit-price-button').onclick = () => showInlineEditForm(product, 'price');
+    div.querySelector('.edit-quantity-button').onclick = () => showInlineEditForm(product, 'quantity');
     div.querySelector('.delete-button').onclick = () => deleteProduct(product._id);
-    
+
     productList.appendChild(div);
   });
 }
@@ -350,7 +307,6 @@ function showInlineEditForm(product, mode) {
           body: JSON.stringify({ price: parseFloat(value) }),
         });
       } else {
-        // Always ADD the entered value to the current quantity
         await fetch(`${apiUrl}/products/${product._id}/quantity`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -358,8 +314,10 @@ function showInlineEditForm(product, mode) {
         });
       }
       await fetchProducts();
+      await fetchTransactions(); // Ensure transactions are updated
     } catch (error) {
       console.error('Error updating product:', error);
+      alert('Error updating product.');
     } finally {
       hideLoading();
     }
@@ -379,9 +337,14 @@ function renderPurchase() {
           <label for="purchase-product" class="block text-sm font-medium text-gray-700 mb-1">Select Product</label>
           <select id="purchase-product" required class="input-field w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">-- Select a product --</option>
-            ${products.filter(p => p.quantity > 0).map(p => `
-              <option value="${p._id}">${p.name} - Gh₵${p.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${p.quantity} available)</option>
-            `).join('')}
+            ${products
+              .filter((p) => p.quantity > 0)
+              .map(
+                (p) => `
+              <option value="${p._id}">${p.name} - Gh₵${p.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (${p.quantity} available)</option>
+            `
+              )
+              .join('')}
           </select>
         </div>
         <div>
@@ -398,10 +361,7 @@ function renderPurchase() {
   document.getElementById('purchase-form').onsubmit = processPurchase;
 }
 
-
-
 function renderTransactions(filteredList = null, filterType = '', filterDate = '') {
-  // Use filtered list if provided, otherwise show all
   const list = filteredList || transactions;
   const totalCount = transactions.length;
   const filteredCount = list.length;
@@ -414,7 +374,7 @@ function renderTransactions(filteredList = null, filterType = '', filterDate = '
           <h2 class="text-2xl font-semibold text-gray-800">
             Transaction History
             <span class="text-base text-gray-500 font-normal ml-2">
-              (${filteredCount} shown${filterType || filterDate ? `, Total: Gh₵${filteredTotalPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : ''})
+              (${filteredCount} shown${filterType || filterDate ? `, Total: Gh₵${filteredTotalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ''})
             </span>
           </h2>
         </div>
@@ -473,8 +433,7 @@ function renderTransactions(filteredList = null, filterType = '', filterDate = '
       </div>
     </div>
   `;
-  
-  // Attach event listeners for filter buttons
+
   document.getElementById('show-filter-btn').onclick = () => {
     isFilterVisible = true;
     renderTransactions(filteredList, filterType, filterDate);
@@ -496,19 +455,17 @@ function renderTransactionList(list, filterType = '', filterDate = '') {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
-        ${filterType || filterDate ? 
-          `No matching transactions found${filterType ? ` for type "${filterType}"` : ''}${filterDate ? ` on ${filterDate}` : ''}` : 
-          'No transactions recorded yet'}
+        ${filterType || filterDate ? `No matching transactions found${filterType ? ` for type "${filterType}"` : ''}${filterDate ? ` on ${filterDate}` : ''}` : 'No transactions recorded yet'}
       </td>
     `;
     tbody.appendChild(tr);
     return;
   }
-  
-  list.forEach(t => {
+
+  list.forEach((t) => {
     const tr = document.createElement('tr');
     tr.className = 'hover:bg-gray-50';
-    
+
     let typeBadge = '';
     if (t.type === 'purchase') {
       typeBadge = '<span class="badge badge-success">PURCHASE</span>';
@@ -521,24 +478,24 @@ function renderTransactionList(list, filterType = '', filterDate = '') {
     } else if (t.type === 'delete') {
       typeBadge = '<span class="badge badge-danger">DELETE</span>';
     }
-    
+
     let details = '';
     if (t.type === 'purchase') {
-      details = `Qty: ${t.quantity} • Total: Gh₵${(t.totalPrice ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      details = `Qty: ${t.quantity} • Total: Gh₵${(t.totalPrice ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } else if (t.type === 'update quantity') {
       details = `Qty Added: ${t.quantity} • New Total: ${t.quantityAvailable ?? 'N/A'}`;
     } else if (t.type === 'add') {
       details = `Qty Added: ${t.quantity}`;
     } else if (t.type === 'edit') {
       if (typeof t.oldPrice !== 'undefined' && typeof t.newPrice !== 'undefined') {
-        details = `Price: Gh₵${Number(t.oldPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} → Gh₵${Number(t.newPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        details = `Price: Gh₵${Number(t.oldPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} → Gh₵${Number(t.newPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       } else if (typeof t.quantity !== 'undefined') {
         details = `Qty Changed: ${t.quantity}`;
       }
     } else if (t.type === 'delete') {
       details = `Qty at Deletion: ${t.quantity}`;
     }
-    
+
     tr.innerHTML = `
       <td class="px-6 py-4 whitespace-nowrap">${typeBadge}</td>
       <td class="px-6 py-4 whitespace-nowrap font-medium">${t.productName}</td>
@@ -555,24 +512,21 @@ function renderSummary() {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const todaySales = transactions.filter(t =>
-    t.type === 'purchase' &&
-    new Date(t.timestamp) >= today &&
-    new Date(t.timestamp) < tomorrow
+  const todaySales = transactions.filter(
+    (t) => t.type === 'purchase' && new Date(t.timestamp) >= today && new Date(t.timestamp) < tomorrow
   );
 
   const totalSales = todaySales.reduce((sum, t) => sum + (t.totalPrice || 0), 0);
   const avgSale = todaySales.length > 0 ? totalSales / todaySales.length : 0;
 
-  // --- Group by productName ---
   const grouped = {};
-  todaySales.forEach(t => {
+  todaySales.forEach((t) => {
     if (!grouped[t.productName]) {
       grouped[t.productName] = {
         productName: t.productName,
         quantity: 0,
         totalPrice: 0,
-        latest: t.timestamp
+        latest: t.timestamp,
       };
     }
     grouped[t.productName].quantity += t.quantity;
@@ -590,7 +544,7 @@ function renderSummary() {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-blue-50 p-6 rounded-lg">
           <div class="text-sm font-medium text-blue-600">Total Sales</div>
-          <div class="text-3xl font-bold text-gray-900 mt-2">Gh₵${totalSales.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+          <div class="text-3xl font-bold text-gray-900 mt-2">Gh₵${totalSales.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </div>
         <div class="bg-green-50 p-6 rounded-lg">
           <div class="text-sm font-medium text-green-600">Total Transactions</div>
@@ -598,7 +552,7 @@ function renderSummary() {
         </div>
         <div class="bg-purple-50 p-6 rounded-lg">
           <div class="text-sm font-medium text-purple-600">Average Sale</div>
-          <div class="text-3xl font-bold text-gray-900 mt-2">Gh₵${avgSale.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+          <div class="text-3xl font-bold text-gray-900 mt-2">Gh₵${avgSale.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
         </div>
       </div>
       <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Transactions</h3>
@@ -613,22 +567,28 @@ function renderSummary() {
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            ${groupedArr.length === 0 ? `
+            ${groupedArr.length === 0
+              ? `
               <tr>
                 <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
                   No transactions today
                 </td>
               </tr>
-            ` : groupedArr.map(g => `
+            `
+              : groupedArr
+                  .map(
+                    (g) => `
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap font-medium">${g.productName}</td>
                 <td class="px-6 py-4 whitespace-nowrap">${g.quantity}</td>
-                <td class="px-6 py-4 whitespace-nowrap">Gh₵${g.totalPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                <td class="px-6 py-4 whitespace-nowrap">Gh₵${g.totalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   ${new Date(g.latest).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
                 </td>
               </tr>
-            `).join('')}
+            `
+                  )
+                  .join('')}
           </tbody>
         </table>
       </div>
@@ -646,6 +606,7 @@ async function fetchProducts() {
     renderPurchase();
   } catch (error) {
     console.error('Error fetching products:', error);
+    alert('Error fetching products.');
   } finally {
     hideLoading();
   }
@@ -656,10 +617,16 @@ async function fetchTransactions() {
   try {
     const res = await fetch(`${apiUrl}/transactions`);
     transactions = await res.json();
-    renderTransactions();
-    renderSummary();
+    // Ensure the current section is updated
+    const activeSection = localStorage.getItem('activeSection') || 'products';
+    if (activeSection === 'transactions') {
+      renderTransactions();
+    } else if (activeSection === 'summary') {
+      renderSummary();
+    }
   } catch (error) {
     console.error('Error fetching transactions:', error);
+    alert('Error fetching transactions.');
   } finally {
     hideLoading();
   }
@@ -668,16 +635,16 @@ async function fetchTransactions() {
 // --- Product CRUD ---
 async function addProduct(e) {
   e.preventDefault();
-  
+
   const name = document.getElementById('product-name').value.trim();
   const price = parseFloat(document.getElementById('product-price').value);
   const quantity = parseInt(document.getElementById('product-quantity').value);
-  
+
   if (!name || isNaN(price) || isNaN(quantity)) {
     alert('Please fill all fields with valid values.');
     return;
   }
-  
+
   showLoading();
   try {
     const res = await fetch(`${apiUrl}/products`, {
@@ -685,16 +652,16 @@ async function addProduct(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, price, quantity }),
     });
-    
+
     if (!res.ok) {
       const err = await res.json();
       alert(err.message || 'Failed to add product.');
       return;
     }
-    
-    // Reset form
+
     document.getElementById('product-form').reset();
     await fetchProducts();
+    await fetchTransactions(); // Update transactions
   } catch (error) {
     console.error('Error adding product:', error);
     alert('An error occurred while adding the product.');
@@ -705,11 +672,12 @@ async function addProduct(e) {
 
 async function deleteProduct(id) {
   if (!confirm('Are you sure you want to delete this product?')) return;
-  
+
   showLoading();
   try {
     await fetch(`${apiUrl}/products/${id}/request`, { method: 'DELETE' });
     await fetchProducts();
+    await fetchTransactions(); // Update transactions
   } catch (error) {
     console.error('Error deleting product:', error);
     alert('An error occurred while deleting the product.');
@@ -721,15 +689,15 @@ async function deleteProduct(id) {
 // --- Purchase ---
 async function processPurchase(e) {
   e.preventDefault();
-  
+
   const productId = document.getElementById('purchase-product').value;
   const quantity = parseInt(document.getElementById('purchase-quantity').value);
-  
+
   if (!productId || isNaN(quantity) || quantity < 1) {
     alert('Please select a product and enter a valid quantity.');
     return;
   }
-  
+
   showLoading();
   try {
     const res = await fetch(`${apiUrl}/transactions/purchase`, {
@@ -737,21 +705,27 @@ async function processPurchase(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productId, quantity }),
     });
-    
+
     if (!res.ok) {
       const err = await res.json();
       alert(err.message || 'Failed to process purchase.');
       return;
     }
-    
-    // Show success message
-    const product = products.find(p => p._id === productId);
+
+    const product = products.find((p) => p._id === productId);
     alert(`Successfully purchased ${quantity} ${quantity === 1 ? 'unit' : 'units'} of ${product.name} for Gh₵${(quantity * product.price).toFixed(2)}`);
-    
-    // Reset form
+
     document.getElementById('purchase-form').reset();
     await fetchProducts();
-    await fetchTransactions();
+    await fetchTransactions(); // Ensure transactions are updated
+
+    // If on transactions or summary section, re-render immediately
+    const activeSection = localStorage.getItem('activeSection');
+    if (activeSection === 'transactions') {
+      renderTransactions();
+    } else if (activeSection === 'summary') {
+      renderSummary();
+    }
   } catch (error) {
     console.error('Error processing purchase:', error);
     alert('An error occurred while processing the purchase.');
@@ -773,9 +747,9 @@ function filterTransactions() {
   if (start && end) {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    endDate.setHours(23, 59, 59, 999); // Include entire end day
+    endDate.setHours(23, 59, 59, 999);
 
-    filtered = filtered.filter(t => {
+    filtered = filtered.filter((t) => {
       const d = new Date(t.timestamp);
       return d >= startDate && d <= endDate;
     });
@@ -783,83 +757,18 @@ function filterTransactions() {
   }
 
   if (type) {
-    filtered = filtered.filter(t => t.type === type);
+    filtered = filtered.filter((t) => t.type === type);
     filterType = type;
   }
 
   renderTransactions(filtered, filterType, filterDate);
 }
 
-// --- Sidebar Toggle and Responsive Behavior ---
-// function closeSidebar() {
-//   sidebar.classList.remove('open');
-//   sidebar.classList.add('collapsed');
-//   localStorage.setItem('sidebarCollapsed', 'true');
-//   if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
-// } 
-
-// --- Sidebar Toggle and Responsive Behavior ---
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  sidebar.classList.add('collapsed');
-  localStorage.setItem('sidebarCollapsed', 'true');
-}
-
-
-// function openSidebar() {
-//   sidebar.classList.add('open');
-//   sidebar.classList.remove('collapsed');
-//   localStorage.setItem('sidebarCollapsed', 'false');
-//   if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
-// }
-
-// function toggleSidebar() {
-//   if (sidebar.classList.contains('open')) {
-//     closeSidebar();
-//   } else {
-//     openSidebar();
-//   }
-// } 
-
-
-// --- Toggle Sidebar ---
-
-
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebar.classList.remove('collapsed');
-  localStorage.setItem('sidebarCollapsed', 'false');
-}
-
-function toggleSidebar() {
-  if (sidebar.classList.contains('open')) {
-    closeSidebar();
-  } else {
-    openSidebar();
-  }
-  window.updateMobileMenuBtn();
-}
-
-
-
-toggleSidebarBtn.onclick = (e) => {
-  e.stopPropagation(); // Prevent event bubbling
-  toggleSidebar();
-};
-
-
-
 // --- Navigation Highlight and Auto-Collapse ---
-const navButtons = [
-  'nav-products',
-  'nav-add-product',
-  'nav-purchase',
-  'nav-transactions',
-  'nav-summary'
-];
+const navButtons = ['nav-products', 'nav-add-product', 'nav-purchase', 'nav-transactions', 'nav-summary'];
 
 function setActiveNav(id) {
-  navButtons.forEach(btnId => {
+  navButtons.forEach((btnId) => {
     const btn = document.getElementById(btnId);
     if (btn) {
       btn.classList.toggle('active', btnId === id);
@@ -867,7 +776,7 @@ function setActiveNav(id) {
   });
 }
 
-// Attach navigation events with local storage persistence
+// Attach navigation events
 document.getElementById('nav-products').onclick = () => {
   showSection('products');
   renderProducts();
@@ -875,7 +784,7 @@ document.getElementById('nav-products').onclick = () => {
   localStorage.setItem('activeNav', 'nav-products');
   if (window.innerWidth <= 1024) {
     closeSidebar();
-    window.updateMobileMenuBtn && window.updateMobileMenuBtn();
+    window.updateMobileMenuBtn();
   }
 };
 document.getElementById('nav-add-product').onclick = () => {
@@ -885,7 +794,7 @@ document.getElementById('nav-add-product').onclick = () => {
   localStorage.setItem('activeNav', 'nav-add-product');
   if (window.innerWidth <= 1024) {
     closeSidebar();
-    window.updateMobileMenuBtn && window.updateMobileMenuBtn();
+    window.updateMobileMenuBtn();
   }
 };
 document.getElementById('nav-purchase').onclick = () => {
@@ -893,22 +802,33 @@ document.getElementById('nav-purchase').onclick = () => {
   renderPurchase();
   setActiveNav('nav-purchase');
   localStorage.setItem('activeNav', 'nav-purchase');
-  if (window.innerWidth <= 1024) closeSidebar();
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
 };
 document.getElementById('nav-transactions').onclick = () => {
   showSection('transactions');
   renderTransactions();
   setActiveNav('nav-transactions');
   localStorage.setItem('activeNav', 'nav-transactions');
-  if (window.innerWidth <= 1024) closeSidebar();
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
 };
 document.getElementById('nav-summary').onclick = () => {
   showSection('summary');
   renderSummary();
   setActiveNav('nav-summary');
   localStorage.setItem('activeNav', 'nav-summary');
-  if (window.innerWidth <= 1024) closeSidebar();
+  if (window.innerWidth <= 1024) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
 };
+
+// Close sidebar on click outside
 document.addEventListener('click', function (event) {
   if (
     window.innerWidth <= 1024 &&
@@ -921,7 +841,8 @@ document.addEventListener('click', function (event) {
     window.updateMobileMenuBtn();
   }
 });
-// --- Responsive: Close sidebar on resize if needed ---
+
+// --- Responsive: Close sidebar on resize ---
 window.addEventListener('resize', () => {
   if (window.innerWidth > 1024) {
     openSidebar();
@@ -930,29 +851,22 @@ window.addEventListener('resize', () => {
   }
 });
 
-
-
 // --- Initial Load ---
 window.addEventListener('DOMContentLoaded', async () => {
   initSidebar();
-  
-  // Set copyright year
+
   document.getElementById('copyright-year').textContent = new Date().getFullYear();
-  
-  // Retrieve the last active section and nav from localStorage, default to 'products'
+
   const lastSection = localStorage.getItem('activeSection') || 'products';
   const lastNav = localStorage.getItem('activeNav') || 'nav-products';
-  
-  // Validate the stored section to ensure it exists
+
   const validSections = ['products', 'addProduct', 'purchase', 'transactions', 'summary'];
   const activeSection = validSections.includes(lastSection) ? lastSection : 'products';
   const activeNav = navButtons.includes(lastNav) ? lastNav : 'nav-products';
-  
-  // Show the section and highlight the nav
+
   showSection(activeSection);
   setActiveNav(activeNav);
-  
-  // Render the appropriate section content
+
   if (activeSection === 'products') renderProducts();
   else if (activeSection === 'addProduct') renderAddProduct();
   else if (activeSection === 'purchase') renderPurchase();
@@ -961,15 +875,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   showLoading();
   try {
-    await fetchProducts(); // Fetch and render products
-    await fetchTransactions(); // Fetch transactions for other sections
+    await fetchProducts();
+    await fetchTransactions();
   } catch (error) {
     console.error('Initial load error:', error);
   } finally {
     hideLoading();
   }
 });
-
 
 function showInlineAddQuantityForm(product) {
   const actionsDiv = document.getElementById(`actions-${product._id}`);
@@ -994,37 +907,23 @@ function showInlineAddQuantityForm(product) {
       return;
     }
 
-    alert(`Adding quantity...${value}`);
-    await fetch(`${apiUrl}/products/${product._id}/quantity`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quantity: value }),
-    });
-    await fetchProducts();
-    await fetchTransactions();
+    showLoading();
+    try {
+      await fetch(`${apiUrl}/products/${product._id}/quantity`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: value }),
+      });
+      await fetchProducts();
+      await fetchTransactions();
+    } catch (error) {
+      console.error('Error adding quantity:', error);
+      alert('Error adding quantity.');
+    } finally {
+      hideLoading();
+    }
   };
   document.getElementById(`cancel-inline-add-quantity-${product._id}`).onclick = () => {
     renderProducts();
   };
 }
-
-document.addEventListener('click', function(event) {
-  // Only in tablet/mobile and when sidebar is open
-  if (
-    window.innerWidth <= 1024 &&
-    sidebar.classList.contains('open') &&
-    !sidebar.contains(event.target) &&
-    event.target.id !== 'mobile-menu-btn'
-  ) {
-    closeSidebar();
-    window.updateMobileMenuBtn && window.updateMobileMenuBtn();
-  }
-}); 
-
-
-
-
-
-
-
-
