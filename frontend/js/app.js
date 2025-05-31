@@ -290,7 +290,7 @@ function showInlineEditForm(product, mode) {
             value="">
         </div>
         <button type="submit" class="btn-${isPrice ? 'primary' : 'success'} px-3 py-2 text-sm">
-          Update ${isPrice ? 'Price' : 'Quantity'}
+          Update ${isPrice ? 'Price' : 'Qty'}
         </button>
         <button type="button" class="bg-gray-200 text-gray-700 px-3 py-2 rounded text-sm hover:bg-gray-300" id="cancel-inline-edit-${product._id}">
           Cancel
