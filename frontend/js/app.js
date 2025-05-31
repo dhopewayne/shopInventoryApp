@@ -1,4 +1,3 @@
-
 const apiUrl = 'https://shopinventoryapp-production.up.railway.app/api';
 
 

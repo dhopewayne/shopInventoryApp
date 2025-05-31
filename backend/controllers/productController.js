@@ -111,15 +111,17 @@ exports.addProductQuantity = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    product.quantity += parseInt(quantity);
+    product.quantity += parseInt(quantity); // <-- This adds to the current quantity
     const updatedProduct = await product.save();
 
-    // Create a transaction record for adding quantity
+    // Create a transaction record for updating quantity
     const transaction = new Transaction({
-      type: 'update quantity', // <-- use this type
+      type: 'update quantity',
       productId: updatedProduct._id,
       productName: updatedProduct.name,
-      quantity
+      quantity: parseInt(quantity), // quantity added
+      quantityAvailable: updatedProduct.quantity, // new total after update
+      timestamp: new Date()
     });
 
     await transaction.save();
