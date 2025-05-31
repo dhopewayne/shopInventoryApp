@@ -67,7 +67,58 @@ const sections = {
 //   // Also update when sidebar is closed programmatically
 //   window.updateMobileMenuBtn = updateMobileMenuBtn;
 //   updateMobileMenuBtn();
-// }
+// } 
+
+// --- Initialize Sidebar State ---
+function initSidebar() {
+  const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+  if (isCollapsed) {
+    sidebar.classList.add('collapsed');
+    sidebar.classList.remove('open');
+  } else {
+    sidebar.classList.remove('collapsed');
+    if (window.innerWidth <= 1024) {
+      sidebar.classList.remove('open');
+    } else {
+      sidebar.classList.add('open');
+    }
+  }
+
+  // Mobile menu toggle
+  let mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (!mobileMenuBtn) {
+    mobileMenuBtn = document.createElement('button');
+    mobileMenuBtn.id = 'mobile-menu-btn';
+    mobileMenuBtn.className = 'md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-md shadow-md'; // Increased z-index and padding
+    mobileMenuBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    `;
+    document.body.appendChild(mobileMenuBtn);
+  }
+
+  mobileMenuBtn.onclick = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    toggleSidebar();
+  };
+
+  // Update mobile menu button visibility
+  function updateMobileMenuBtn() {
+    if (window.innerWidth <= 1024) {
+      mobileMenuBtn.style.display = sidebar.classList.contains('open') ? 'none' : 'block';
+    } else {
+      mobileMenuBtn.style.display = 'none';
+    }
+  }
+
+  // Listen for sidebar transitions and window resize
+  sidebar.addEventListener('transitionend', updateMobileMenuBtn);
+  window.addEventListener('resize', updateMobileMenuBtn);
+  window.updateMobileMenuBtn = updateMobileMenuBtn;
+  updateMobileMenuBtn();
+}
+
 
 // --- Toggle Sidebar ---
 toggleSidebarBtn.onclick = () => {
@@ -745,14 +796,22 @@ function filterTransactions() {
 //   sidebar.classList.add('collapsed');
 //   localStorage.setItem('sidebarCollapsed', 'true');
 //   if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
-// }
+// } 
 
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebar.classList.remove('collapsed');
-  localStorage.setItem('sidebarCollapsed', 'false');
-  if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
+// --- Sidebar Toggle and Responsive Behavior ---
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  sidebar.classList.add('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'true');
 }
+
+
+// function openSidebar() {
+//   sidebar.classList.add('open');
+//   sidebar.classList.remove('collapsed');
+//   localStorage.setItem('sidebarCollapsed', 'false');
+//   if (window.innerWidth <= 1024) window.updateMobileMenuBtn();
+// }
 
 // function toggleSidebar() {
 //   if (sidebar.classList.contains('open')) {
@@ -760,61 +819,18 @@ function openSidebar() {
 //   } else {
 //     openSidebar();
 //   }
-// }
+// } 
 
-
-
-// --- Initialize Sidebar State ---
-function initSidebar() {
-  const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-  if (isCollapsed) {
-    sidebar.classList.add('collapsed');
-    sidebar.classList.remove('open');
-  } else {
-    sidebar.classList.remove('collapsed');
-    if (window.innerWidth <= 1024) {
-      sidebar.classList.remove('open');
-    } else {
-      sidebar.classList.add('open');
-    }
-  }
-
-  // Mobile menu toggle
-  let mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  if (!mobileMenuBtn) {
-    mobileMenuBtn = document.createElement('button');
-    mobileMenuBtn.id = 'mobile-menu-btn';
-    mobileMenuBtn.className = 'md:hidden fixed top-4 right-4 z-50 bg-white p-3 rounded-md shadow-md'; // Increased z-index and padding
-    mobileMenuBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    `;
-    document.body.appendChild(mobileMenuBtn);
-  }
-
-  mobileMenuBtn.onclick = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    toggleSidebar();
-  };
-
-  // Update mobile menu button visibility
-  function updateMobileMenuBtn() {
-    if (window.innerWidth <= 1024) {
-      mobileMenuBtn.style.display = sidebar.classList.contains('open') ? 'none' : 'block';
-    } else {
-      mobileMenuBtn.style.display = 'none';
-    }
-  }
-
-  // Listen for sidebar transitions and window resize
-  sidebar.addEventListener('transitionend', updateMobileMenuBtn);
-  window.addEventListener('resize', updateMobileMenuBtn);
-  window.updateMobileMenuBtn = updateMobileMenuBtn;
-  updateMobileMenuBtn();
-}
 
 // --- Toggle Sidebar ---
+
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  sidebar.classList.remove('collapsed');
+  localStorage.setItem('sidebarCollapsed', 'false');
+}
+
 function toggleSidebar() {
   if (sidebar.classList.contains('open')) {
     closeSidebar();
@@ -824,43 +840,14 @@ function toggleSidebar() {
   window.updateMobileMenuBtn();
 }
 
-// --- Sidebar Toggle and Responsive Behavior ---
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  sidebar.classList.add('collapsed');
-  localStorage.setItem('sidebarCollapsed', 'true');
-}
 
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebar.classList.remove('collapsed');
-  localStorage.setItem('sidebarCollapsed', 'false');
-}
 
-// Attach toggle to button
 toggleSidebarBtn.onclick = (e) => {
   e.stopPropagation(); // Prevent event bubbling
   toggleSidebar();
 };
 
-// Close sidebar when clicking outside on mobile
-document.addEventListener('click', function (event) {
-  if (
-    window.innerWidth <= 1024 &&
-    sidebar.classList.contains('open') &&
-    !sidebar.contains(event.target) &&
-    event.target.id !== 'mobile-menu-btn' &&
-    !mobileMenuBtn.contains(event.target)
-  ) {
-    closeSidebar();
-    window.updateMobileMenuBtn();
-  }
-});
 
-// ... (rest of the previous code remains unchanged)
-
-// Attach toggle to button
-toggleSidebarBtn.onclick = toggleSidebar;
 
 // --- Navigation Highlight and Auto-Collapse ---
 const navButtons = [
@@ -922,7 +909,18 @@ document.getElementById('nav-summary').onclick = () => {
   localStorage.setItem('activeNav', 'nav-summary');
   if (window.innerWidth <= 1024) closeSidebar();
 };
-
+document.addEventListener('click', function (event) {
+  if (
+    window.innerWidth <= 1024 &&
+    sidebar.classList.contains('open') &&
+    !sidebar.contains(event.target) &&
+    event.target.id !== 'mobile-menu-btn' &&
+    !mobileMenuBtn.contains(event.target)
+  ) {
+    closeSidebar();
+    window.updateMobileMenuBtn();
+  }
+});
 // --- Responsive: Close sidebar on resize if needed ---
 window.addEventListener('resize', () => {
   if (window.innerWidth > 1024) {
@@ -1024,3 +1022,16 @@ document.addEventListener('click', function(event) {
 }); 
 
 
+
+
+
+
+
+
+
+// Attach toggle to button
+
+// Close sidebar when clicking outside on mobile
+
+
+// ... (rest of the previous code remains unchanged)
