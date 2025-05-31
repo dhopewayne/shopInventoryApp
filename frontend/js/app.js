@@ -897,7 +897,7 @@ function showInlineAddQuantityForm(product) {
         required min="1"
         class="p-2 border rounded-lg">
       <div class="flex gap-2">
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Add</button>
+        <button type="submit" class="bg-blue-300 text-white px-4 py-2 rounded-lg hover:bg-blue-400">Add</button>
         <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500" id="cancel-inline-add-quantity-${product._id}">Cancel</button>
       </div>
     </form>
