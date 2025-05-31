@@ -286,7 +286,7 @@ function showInlineEditForm(product, mode) {
           <input type="number" id="inline-edit-value-${product._id}" 
             placeholder="Enter ${isPrice ? 'new price' : 'quantity to add'}" 
             required min="0" step="${step}"
-            class="input-field w-full p-2 border rounded focus:ring-2 focus:ring-${isPrice ? 'blue' : 'green'}-500 focus:border-${isPrice ? 'blue' : 'green'}-500"
+            class="input-field w-full p-2 border rounded focus:ring-2 focus:ring-${isPrice ? 'blue' : 'green'}-500 focus:border-${isPrice ? 'blue' : 'green'}-300"
             value="">
         </div>
         <button type="submit" class="btn-${isPrice ? 'primary' : 'success'} px-3 py-2 text-sm">
