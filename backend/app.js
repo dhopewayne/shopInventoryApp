@@ -47,7 +47,7 @@ app.use(rateLimit({
 
 // 'https://shopinventoryapp-production.up.railway', 'http://localhost:5000'
 app.use(cors({
-  origin: [ 'https://shopinventoryapp-i4d2.onrender.com'], // Adjust to your frontend URL
+  origin: [ 'https://shopinventoryapp-1.onrender.com'], // Adjust to your frontend URL
   credentials: true,
 }));
 

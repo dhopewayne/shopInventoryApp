@@ -1,4 +1,4 @@
-const apiUrl = 'https://shopinventoryapp-production.up.railway.app/api';
+const apiUrl = 'https://shopinventoryapp-1.onrender.com.app/api';
 
 let products = [];
 let transactions = [];
