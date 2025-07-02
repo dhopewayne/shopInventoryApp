@@ -1,7 +1,7 @@
 {
   "name": "shop-inventory-project",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "backend/app.js",
   "scripts": {
     "start": "node backend/app.js",
     "dev": "nodemon backend/app.js",
