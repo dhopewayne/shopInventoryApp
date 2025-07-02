@@ -1,4 +1,4 @@
-const apiUrl = 'https://shopinventoryapp-1.onrender.com.app/api';
+const apiUrl = 'https://shopinventoryapp-1.onrender.com/api';
 
 let products = [];
 let transactions = [];
